@@ -7,31 +7,36 @@ import Col from "react-bootstrap/Col";
 import Card from "react-bootstrap/Card";
 import Button from "react-bootstrap/Button";
 import axios from "axios";
-
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faSun } from "@fortawesome/free-solid-svg-icons";
 import "./App.css";
 
 function App() {
   const [dataWeather, setDataWeather] = useState({
     condicionesActuales: {
-      temp: null,
-      hum: null,
-      pres: null
+      temp: 0,
+      hum: 0,
+      pres: 0
     }
   });
 
   useEffect(() => {
+    setInterval(() => fetchData(), 10000);
+
     const fetchData = async () => {
-      const result = await axios(
-        "http://localhost:57400/api/estadometeorologico"
-      );
-      debugger;
-      setDataWeather({
-        condicionesActuales: {
-          temp: result.data.condicionesActuales.temp,
-          hum: result.data.condicionesActuales.hum,
-          pres: result.data.condicionesActuales.pres
-        }
-      });
+      await axios("http://localhost:57400/api/estadometeorologico")
+        .then(result => {
+          setDataWeather({
+            condicionesActuales: {
+              temp: result.data.condicionesActuales.temp,
+              hum: result.data.condicionesActuales.hum,
+              pres: result.data.condicionesActuales.pres
+            }
+          });
+        })
+        .catch(error => {
+          console.log(error);
+        });
     };
 
     fetchData();
@@ -39,6 +44,10 @@ function App() {
 
   const style = {
     textAlign: "left"
+  };
+
+  const styleSun = {
+    color: "yellow"
   };
 
   return (
@@ -68,32 +77,37 @@ function App() {
                   src="http://www.placehold.it/100/100/"
                 />
                 <Card.Body>
-                  <Card.Title>Pronostico del tiempo</Card.Title>
                   <Row>
-                    <Col>
-                      <Card.Text style={style}>
-                        Temperatura:{" "}
-                        <Card.Subtitle>
-                          {dataWeather.condicionesActuales.temp}
-                        </Card.Subtitle>
-                        Humedad:{" "}
-                        <Card.Subtitle>
-                          {dataWeather.condicionesActuales.hum}
-                        </Card.Subtitle>
-                        Presión:{" "}
-                        <Card.Subtitle>
-                          {dataWeather.condicionesActuales.pres}
-                        </Card.Subtitle>
-                      </Card.Text>
+                  <Col sm={12}> <Card.Title>Pronostico del tiempo</Card.Title> </Col>
+                  </Row>
+                  <Row>
+                    <Col sm={8}>
+                      <Card.Subtitle style={style}>
+                        Temperatura: {dataWeather.condicionesActuales.temp}
+                      </Card.Subtitle>
                     </Col>
-                    <Col>
-                      <Card.Text style={style}>
-                        Sol {" "} 
-                        <Card.Subtitle>{" "}</Card.Subtitle>
-                        Nubes {" "} 
-                        <Card.Subtitle>{" "}</Card.Subtitle>
-                        Termometro {" "}
-                        <Card.Subtitle>{" "}</Card.Subtitle></Card.Text>
+                    <Col sm={2}>
+                      <FontAwesomeIcon style={styleSun} icon={faSun} />
+                    </Col>
+                  </Row>
+                  <Row>
+                    <Col sm={8}>
+                      <Card.Subtitle style={style}>
+                        Humedad: {dataWeather.condicionesActuales.hum}
+                      </Card.Subtitle>
+                    </Col>
+                    <Col sm={2}>
+                      <FontAwesomeIcon style={styleSun} icon={faSun} />
+                    </Col>
+                  </Row>
+                  <Row>
+                    <Col sm={8}>
+                      <Card.Subtitle style={style}>
+                        Presión: {dataWeather.condicionesActuales.pres}
+                      </Card.Subtitle>
+                    </Col>
+                    <Col sm={2}>
+                      <FontAwesomeIcon style={styleSun} icon={faSun} />
                     </Col>
                   </Row>
                 </Card.Body>

@@ -14,73 +14,74 @@ namespace EstacionMeteorologica.Api.Controllers
         private const string WEATHER_ACTUA_CONDITION = "WeatherActualCondition";
         private const string WEATHER_SIMPLE_FORECAST = "WeatherSimpleForecast";
         private const string WEATHER_STATISTICS = "WeatherStatistics";
+        static int cont = 0;
 
         [HttpGet]
         public ActionResult<IEnumerable<string>> GetEstadoMeteorologico()
         {
-            
+
 
             //return new string[] { "value1", "value2" };
             //var json = new string[] { "value1", "value2" };
 
-        //var monitorProvedir = new SensorMonitor();
+            //var monitorProvedir = new SensorMonitor();
 
-        //var condicionesActuales = new SensorReporter("GetCondicionesActuales");
-        //var estadisticasDelTiempo = new SensorReporter("GetEstadisticasDelTiempo");
-        //var pronosticoSimple = new SensorReporter("GetPronosticoSimple");
-        //condicionesActuales.Subscribe(monitorProvedir);
-        //estadisticasDelTiempo.Subscribe(monitorProvedir);
-        //pronosticoSimple.Subscribe(monitorProvedir);
+            //var condicionesActuales = new SensorReporter("GetCondicionesActuales");
+            //var estadisticasDelTiempo = new SensorReporter("GetEstadisticasDelTiempo");
+            //var pronosticoSimple = new SensorReporter("GetPronosticoSimple");
+            //condicionesActuales.Subscribe(monitorProvedir);
+            //estadisticasDelTiempo.Subscribe(monitorProvedir);
+            //pronosticoSimple.Subscribe(monitorProvedir);
 
-        //// Acá o en un service.. donde sea, haríamos la llamada a la api del clima.
+            //// Acá o en un service.. donde sea, haríamos la llamada a la api del clima.
 
-        //// Create an array of sample data to mimic a temperature device.
-        //Nullable<Decimal>[] temps = { 1m, 1m, 5m, 7m, 7m, 13m, 20m, 20, 28m, 30m };
-        //Nullable<Decimal>[] hums = { 10, 20, 30, 40, 50, 60, 70, 80, 90, 100 };
-        //Nullable<Double>[] pres = { 100.10d, 210.20d, 14.7d, 14.9d, 14.9d, 250d, 560d, 810d, 900d, 1.080d };
+            //// Create an array of sample data to mimic a temperature device.
+            //Nullable<Decimal>[] temps = { 1m, 1m, 5m, 7m, 7m, 13m, 20m, 20, 28m, 30m };
+            //Nullable<Decimal>[] hums = { 10, 20, 30, 40, 50, 60, 70, 80, 90, 100 };
+            //Nullable<Double>[] pres = { 100.10d, 210.20d, 14.7d, 14.9d, 14.9d, 250d, 560d, 810d, 900d, 1.080d };
 
-        //// Store the previous temperature, so notification is only sent after at least .1 change.
-        //Nullable<Decimal> previousTemp = null;
-        //bool start = true;
+            //// Store the previous temperature, so notification is only sent after at least .1 change.
+            //Nullable<Decimal> previousTemp = null;
+            //bool start = true;
 
-        ////foreach (var temp in temps)
-        //for (int i = 0; i < temps.Length; i++)
-        //{
-        //    //System.Threading.Thread.Sleep(2500);
-        //    if (temps[i].HasValue)
-        //    {
-        //        if (start || (Math.Abs(temps[i].Value - previousTemp.Value) >= 0.1m))
-        //        {
-        //            BaseSensor sensorData = new BaseSensor(temps[i].Value, hums[i].Value, pres[i].Value, DateTime.Now);
+            ////foreach (var temp in temps)
+            //for (int i = 0; i < temps.Length; i++)
+            //{
+            //    //System.Threading.Thread.Sleep(2500);
+            //    if (temps[i].HasValue)
+            //    {
+            //        if (start || (Math.Abs(temps[i].Value - previousTemp.Value) >= 0.1m))
+            //        {
+            //            BaseSensor sensorData = new BaseSensor(temps[i].Value, hums[i].Value, pres[i].Value, DateTime.Now);
 
-        //            foreach (var observer in monitorProvedir.observers)
-        //            {
-        //                //Console.WriteLine("Observer: " + observer.ToString());
-        //                //Console.WriteLine("Temp: " + tempData.Degrees + " .Fecha: " + tempData.Date);
-        //                observer.OnNext(sensorData);
-        //            }
+            //            foreach (var observer in monitorProvedir.observers)
+            //            {
+            //                //Console.WriteLine("Observer: " + observer.ToString());
+            //                //Console.WriteLine("Temp: " + tempData.Degrees + " .Fecha: " + tempData.Date);
+            //                observer.OnNext(sensorData);
+            //            }
 
-        //            previousTemp = temps[i];
-        //            if (start) start = false;
-        //        }
-        //    }
-        //    else
-        //    {
-        //        foreach (var observer in monitorProvedir.observers.ToArray())
-        //            if (observer != null) observer.OnCompleted();
+            //            previousTemp = temps[i];
+            //            if (start) start = false;
+            //        }
+            //    }
+            //    else
+            //    {
+            //        foreach (var observer in monitorProvedir.observers.ToArray())
+            //            if (observer != null) observer.OnCompleted();
 
-        //        monitorProvedir.observers.Clear();
-        //        break;
-        //    }
-        //}
+            //        monitorProvedir.observers.Clear();
+            //        break;
+            //    }
+            //}
 
-        //var result = new EstacionMeteorologicaDto()
-        //{
-        //    CondicionesActuales = new CondicionesActuales(20, 30, 50, DateTime.Now),
-        //    PronosticoSimple = new PronosticoSimple(60,70,80,DateTime.Now.AddDays(1))
-        //};
+            //var result = new EstacionMeteorologicaDto()
+            //{
+            //    CondicionesActuales = new CondicionesActuales(20, 30, 50, DateTime.Now),
+            //    PronosticoSimple = new PronosticoSimple(60,70,80,DateTime.Now.AddDays(1))
+            //};
 
-        WeatherSubscriber subscriber = new WeatherSubscriber();
+            WeatherSubscriber subscriber = new WeatherSubscriber();
 
             WeatherActualCondition actualCondition = new WeatherActualCondition("WeatherActualCondition");
             WeatherStatistics statistics = new WeatherStatistics("WeatherStatistics");
@@ -90,7 +91,15 @@ namespace EstacionMeteorologica.Api.Controllers
             statistics.Subscribe(subscriber);
             simpleForecast.Subscribe(subscriber);
 
-            subscriber.SetMeasurements(new WeatherData(10, 7, 14, DateTime.Now));
+            decimal[] temps = { 1m, 1m, 5m, 7m, 7m, 13m, 20m, 20, 28m, 30m };
+            decimal[] hums = { 10, 20, 30, 40, 50, 60, 70, 80, 90, 100 };
+            double[] pres = { 100.10d, 210.20d, 14.7d, 14.9d, 14.9d, 250d, 560d, 810d, 900d, 1.080d };
+
+            if (cont == 10)
+                cont = 0;
+
+            subscriber.SetMeasurements(new WeatherData(temps[cont], hums[cont], pres[cont], DateTime.Now));
+           
             //subscriber.SetMeasurements(null);
 
             //Console.Read();
@@ -129,6 +138,9 @@ namespace EstacionMeteorologica.Api.Controllers
                 }
             }
 
+            // http://api.openweathermap.org/data/2.5/weather?lat=-34.605019&lon=-58.376068&units=metric&APPID=5134ad0266da5e981b25f1d569d4c8f6
+
+            cont++;
             return Ok(result);
         }
 
