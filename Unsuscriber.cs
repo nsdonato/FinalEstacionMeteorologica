@@ -1,9 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
-namespace EstacionMeteorologica.Api
+namespace WeatherStation.Api
 {
     public class Unsubscriber : IDisposable
     {

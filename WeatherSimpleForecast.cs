@@ -3,18 +3,21 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace EstacionMeteorologica.Api
+namespace WeatherStation.Api
 {
     public class WeatherSimpleForecast : IObserver<WeatherData>
     {
+        private const string FORECAST_COLD_DAY = "Cloudy day with a chance of rain and afternoon rainfall.";
+        private const string FORECAST_SUNNY_DAY = "Very sunny day, with little chance of rain and winds of 20km per hour.";
+
         private IDisposable unsubscriber;
-        private bool first = true;
-        public WeatherData last { get; private set; }
-        public string sensorName { get; private set; }
+        public string SensorName { get; private set; }
+        public string Temperature { get; set; }
+        public string Forecast { get; set; }
 
         public WeatherSimpleForecast(string name)
         {
-            this.sensorName = name;
+            this.SensorName = name;
         }
 
         public virtual void Subscribe(IObservable<WeatherData> provider)
@@ -29,34 +32,30 @@ namespace EstacionMeteorologica.Api
 
         public virtual void OnCompleted()
         {
-            //Console.WriteLine("La temperatura adicional no será transimitada.");
-            Console.WriteLine("The Provider has completed transmitting data to {0}.", this.sensorName);
             this.Unsubscribe();
         }
 
         public virtual void OnError(Exception error)
         {
-            Console.WriteLine("{0}: The provider cannot be read data.", this.sensorName);
+            Console.WriteLine("{0}: The provider cannot be read data.", this.SensorName);
         }
 
         public virtual void OnNext(WeatherData value)
         {
-            //Console.WriteLine("{3}: The current Weather is Temperature: {0}, Pressure {1}, Humidty {2}", value.Temperature, value.Presssure, value.Humidity, this.Name);
+            this.Temperature = value.Temp;
+            this.Forecast = CalculateForecast();
+        }
 
-            Console.WriteLine("La temperatura es {0}°C. Fecha: {1:g}", value.Temp, value.Date);
-            if (first)
+        public string CalculateForecast()
+        {
+            if (int.Parse(this.Temperature) > int.Parse("21"))
             {
-                last = value;
-                first = false;
+                return FORECAST_SUNNY_DAY;
             }
             else
             {
-                Console.WriteLine("Cambio de temperatura: {0}°C. Fecha: {1:g}",
-                    value.Temp - last.Temp,
-                    value.Date.ToUniversalTime() - last.Date.ToUniversalTime());
+                return FORECAST_COLD_DAY;
             }
         }
-
-
     }
 }

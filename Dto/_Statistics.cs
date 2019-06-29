@@ -1,16 +1,13 @@
-﻿    using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using System;
 
-namespace EstacionMeteorologica.Api
+namespace WeatherStation.Api
 {
-    public class EstadisticasDelTiempo //: WeatherData
+    public class Statistics //: WeatherData
     {
-        //private readonly List<CondicionesDiarias> = new 
-        //public EstadisticasDelTiempo(
+        //private readonly List<CurrentConditions> = new
+        //public Statistics(
         //    decimal temp, decimal hum, double pres, DateTime fromDate, DateTime toDate)
-        //    : base(temp,hum,pres, DateTime.Now)
+        //    : base(temp, hum, pres, DateTime.Now)
         //{
         //    TempActual = temp;
         //    HumActual = hum;

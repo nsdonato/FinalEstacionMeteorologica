@@ -3,13 +3,13 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace EstacionMeteorologica.Api
+namespace WeatherStation.Api
 {
-    public class WeatherSubscriber : IObservable<WeatherData>
+    public class WeatherProvider : IObservable<WeatherData>
     {
         public List<IObserver<WeatherData>> observers;
 
-        public WeatherSubscriber()
+        public WeatherProvider()
         {
             observers = new List<IObserver<WeatherData>>();
         }

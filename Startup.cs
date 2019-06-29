@@ -10,7 +10,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 
-namespace EstacionMeteorologica.Api
+namespace WeatherStation.Api
 {
     public class Startup
     {
