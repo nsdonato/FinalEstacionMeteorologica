@@ -1,7 +1,8 @@
 ﻿using System;
-using WeatherStation.Api.Dto;
+using WeatherStation.Api.ViewModels;
 using WeatherStation.Api.Helper;
 using Microsoft.AspNetCore.Mvc;
+using WeatherStation.Api.Pattern;
 
 namespace WeatherStation.Api.Controllers
 {
@@ -21,74 +22,29 @@ namespace WeatherStation.Api.Controllers
         private readonly WeatherSimpleForecast simpleForecast = new WeatherSimpleForecast(WEATHER_SIMPLE_FORECAST);
 
         [HttpGet]
-        public IActionResult GetWeatherStationDto()
+        public IActionResult GetWeatherStation()
         {
             actualCondition.Subscribe(subscriber);
             statistics.Subscribe(subscriber);
             simpleForecast.Subscribe(subscriber);
 
-            subscriber.SetMeasurements(new WeatherData(
-                        WeatherHelper.getTemperature(),
-                        WeatherHelper.getHumidity(),
-                        WeatherHelper.getPressure(),
-                        DateTime.Now));
+            subscriber.SetMeasurements(new WeatherData(WeatherHelper.GetTemperature(), WeatherHelper.GetHumidity(), WeatherHelper.GetPressure(), DateTime.Now));
 
             this.Result.WeatherActualCondition = actualCondition;
             this.Result.WeatherSimpleForecast = simpleForecast;
             this.Result.WeatherStatistics = statistics;
 
-            //getResults();
-
             return Ok(this.Result);
         }
-
-        //private void getResults()
-        //{
-        //    foreach (var item in subscriber.observers)
-        //    {
-        //        switch (item.GetType().Name)
-        //        {
-        //            case WEATHER_ACTUAL_CONDITION:
-
-        //                this.Result.WeatherActualCondition = new WeatherActualCondition()
-        //                    //new CurrentConditions(
-        //                    //                            ((WeatherActualCondition)item).last.Temp,
-        //                    //                            ((WeatherActualCondition)item).last.Hum,
-        //                    //                            ((WeatherActualCondition)item).last.Pres,
-        //                    //                            DateTime.Now);
-        //                break;
-        //            case WEATHER_SIMPLE_FORECAST:
-
-        //                this.Result.WeatherSimpleForecast = 
-        //                    //new SimpleForecast(
-        //                    //                            ((WeatherSimpleForecast)item).last.Temp,
-        //                    //                            ((WeatherSimpleForecast)item).last.Hum,
-        //                    //                            ((WeatherSimpleForecast)item).last.Pres,
-        //                    //                            DateTime.Now);
-
-        //                break;
-        //                //case WEATHER_STATISTICS:
-
-        //                //    result.CondicionesActuales = new CondicionesActuales(
-        //                //                                    ((WeatherActualCondition)item).last.Temp,
-        //                //                                    ((WeatherActualCondition)item).last.hum,
-        //                //                                    ((WeatherActualCondition)item).last.pres,
-        //                //                                    DateTime.Now);
-        //                //    break;
-        //        }
-        //    }
-        //}
 
         [HttpDelete]
         public IActionResult DeleteSuscriber(string weatherType)
         {
-            foreach (var item in subscriber.observers)
-            {
-                if (item.GetType().Name == weatherType)
-                {
-                    item.OnCompleted();
-                }
-            }
+            subscriber.observers.ForEach(m => {
+                if (m.GetType().Name == weatherType)
+                    m.OnCompleted();
+                return;
+            });
 
             return Ok();
         }

@@ -1,9 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+using WeatherStation.Api.Exceptions;
 
-namespace WeatherStation.Api
+namespace WeatherStation.Api.Pattern
 {
     public class WeatherProvider : IObservable<WeatherData>
     {

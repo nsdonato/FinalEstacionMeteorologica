@@ -1,9 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
-namespace WeatherStation.Api
+namespace WeatherStation.Api.Pattern
 {
     public class WeatherSimpleForecast : IObserver<WeatherData>
     {
@@ -12,7 +9,7 @@ namespace WeatherStation.Api
 
         private IDisposable unsubscriber;
         public string SensorName { get; private set; }
-        public string Temperature { get; set; }
+        public decimal Temperature { get; set; }
         public string Forecast { get; set; }
 
         public WeatherSimpleForecast(string name)
@@ -48,7 +45,7 @@ namespace WeatherStation.Api
 
         public string CalculateForecast()
         {
-            if (int.Parse(this.Temperature) > int.Parse("21"))
+            if (this.Temperature > 21)
             {
                 return FORECAST_SUNNY_DAY;
             }

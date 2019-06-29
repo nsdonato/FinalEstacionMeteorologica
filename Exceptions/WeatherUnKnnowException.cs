@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Runtime.Serialization;
 
-namespace WeatherStation.Api
+namespace WeatherStation.Api.Exceptions
 {
     [Serializable]
     internal class WeatherUnKnnowException : Exception

@@ -1,15 +1,12 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
-namespace WeatherStation.Api
+namespace WeatherStation.Api.Pattern
 {
     public class WeatherActualCondition : IObserver<WeatherData>
     {
         private IDisposable Unsubscriber;
         public WeatherData WeatherData { get; private set; }
-        public string SensorName { get; private set; }
+        public string SensorName { get; }
 
         public WeatherActualCondition(string name)
         {
@@ -40,7 +37,5 @@ namespace WeatherStation.Api
         {
             WeatherData = value;
         }
-
-
     }
 }

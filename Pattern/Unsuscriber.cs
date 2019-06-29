@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace WeatherStation.Api
+namespace WeatherStation.Api.Pattern
 {
     public class Unsubscriber : IDisposable
     {

@@ -5,24 +5,40 @@ using System.Threading.Tasks;
 
 namespace WeatherStation.Api.Helper
 {
+    
+
     public static class WeatherHelper
     {
-        public static decimal getTemperature()
-        {
-            var rand = new Random();
-            return (decimal)rand.NextDouble(); ;
-        }
+        private static readonly Random random = new Random();
 
-        public static decimal getHumidity()
+        public static decimal GetTemperature()
         {
-            var rand = new Random();
-            return (decimal)rand.NextDouble(); ;
+            //var rand = RandomNumberBetween(0,50);
+            //return (decimal)rand.NextDouble(); ;
+            return decimal.Parse(RandomTemperatureBetween(0.0, 50.0).ToString());
         }
-
-        public static double getPressure()
+        public static int GetHumidity()
         {
-            var rand = new Random();
-            return rand.NextDouble(); 
+            return RandomHumidityBetween(100);
+        }
+        public static double GetPressure()
+        {
+            return RandomPressureBetween(1.0, 1.000);
+        }
+        private static double RandomTemperatureBetween(double minValue, double maxValue)
+        {
+            var next = random.NextDouble();
+            return minValue + (next * (maxValue - minValue));
+        }
+        private static int RandomHumidityBetween(int maxValue)
+        {
+            var next = random.Next(maxValue);
+            return next;
+        }
+        private static double RandomPressureBetween(double minValue, double maxValue)
+        {
+            var next = random.NextDouble();
+            return minValue + (next * (maxValue - minValue));
         }
     }
 }
