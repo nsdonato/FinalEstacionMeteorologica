@@ -15,7 +15,7 @@ namespace WeatherStation.Api.Pattern
 
         public IDisposable Subscribe(IObserver<WeatherData> observer)
         {
-            if (!observers.Contains(observer))
+            if (!observers.Equals(observer))
                 observers.Add(observer);
 
             return new Unsubscriber(observers, observer);
