@@ -2,14 +2,14 @@
 
 namespace WeatherStation.Api.Pattern
 {
-    public class WeatherActualCondition : IObserver<WeatherData>
+    public class WeatherCurrentCondition : IObserver<WeatherData>
     {
         private IDisposable _unsubscriber;
         public WeatherData WeatherData { get; private set; }
         public string SensorName { get; }
         public bool IsSuscribed { get; set; }
 
-        public WeatherActualCondition(string name)
+        public WeatherCurrentCondition(string name)
         {
             SensorName = name;
         }

@@ -1,14 +1,12 @@
 import axios from "axios";
 import React, { useState, useEffect } from "react";
 import Card from "react-bootstrap/Card";
-import Col from "react-bootstrap/Col";
 import Container from "react-bootstrap/Container";
 import Row from "react-bootstrap/Row";
 import CONFIG from "./config/config";
-import WeatherActualCondition from "./components/WeatherActualCondition/WeatherActualCondition";
+import WeatherCurrentCondition from "./components/WeatherCurrentCondition/WeatherCurrentCondition";
 import WeatherSimpleForecast from "./components/WeatherSimpleForecast/WeatherSimpleForecast";
 import WeatherStatistics from "./components/WeatherStatistics/WeatherStatistics";
-import ToastMessage from "./components/ToastMessage/ToastMessage";
 
 import "./App.css";
 
@@ -37,69 +35,69 @@ function App() {
 
   var handleSuscribe = async type => {
     await axios
-      .post("http://localhost:57400/api/weatherstation/" + type)
+      .post(CONFIG.API + type)
       .then(result => {
         setDataWeather({ ...result.data, isNull: false });
-        handleShow("Suscribe correctly");
+        handleShow(CONFIG.SUSCRIBE_OK);
       })
       .catch(error => {
         setDataWeather({ isNull: true });
-        handleShow("Error Suscribe");
+        handleShow(CONFIG.SUSCRIBE_ERROR);
       });
   };
 
   var handleUnsuscribe = async type => {
     await axios
-      .delete("http://localhost:57400/api/weatherstation/" + type)
+      .delete(CONFIG.API + type)
       .then(result => {
         setDataWeather({ ...result.data, isNull: false });
-        handleShow("Unsuscribe correctly");
+        handleShow(CONFIG.UNSUSCRIBE_OK);
       })
       .catch(error => {
         setDataWeather({ isNull: true });
-        handleShow("Error Unsuscribe");
+        handleShow(CONFIG.UNSUSCRIBE_ERROR);
       });
   };
 
   const cardStyle = {
-    width: '33%'
-  }
+    width: "33%"
+  };
   return (
     <div className="App">
       <header className="">
         <Container>
           {dataWeather.isNull === false ? (
             <Row>
-              <WeatherActualCondition
-                style={cardStyle} data={dataWeather.weatherActualCondition}
-                cickSuscribe={() => handleSuscribe("WeatherActualCondition")}
-                cickUnsuscribe={() =>
-                  handleUnsuscribe("WeatherActualCondition")
-                }
-              />
-              <WeatherSimpleForecast style={cardStyle}  data={dataWeather.weatherSimpleForecast} />
-              <WeatherStatistics style={cardStyle}  data={dataWeather.weatherStatistics} />
-              
-            </Row>
-          ) : (
-            <Row>
-              <Col>
-                <Card style={{ width: "100%" }}>
-                  <Card.Body>
-                    <Card.Title>Ups...</Card.Title>
-                    <Card.Text>
-                      An error occurred when consulting the weather data.
-                    </Card.Text>
-                  </Card.Body>
-                </Card>
-              </Col>
-            </Row>
-          )}
-          <ToastMessage 
+              <WeatherCurrentCondition
                 close={handleClose}
                 show={showToast.show}
                 info={showToast.info}
+                style={cardStyle}
+                data={dataWeather.weatherCurrentCondition}
+                cickSuscribe={() =>
+                  handleSuscribe(CONFIG.WEATHER_CURRENT_CONDITION)
+                }
+                cickUnsuscribe={() =>
+                  handleUnsuscribe(CONFIG.WEATHER_CURRENT_CONDITION)
+                }
               />
+              <WeatherSimpleForecast
+                style={cardStyle}
+                data={dataWeather.weatherSimpleForecast}
+              />
+              <WeatherStatistics
+                style={cardStyle}
+                data={dataWeather.weatherStatistics}
+              />
+            </Row>
+          ) : (
+            <Card style={{ width: "100%" }}>
+              <Card.Body>
+                <Card.Title>Ups...</Card.Title>
+                <Card.Text>{CONFIG.FETCH_ERROR}</Card.Text>
+              </Card.Body>
+            </Card>
+          )}
         </Container>
       </header>
     </div>

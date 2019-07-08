@@ -10,12 +10,12 @@ namespace WeatherStation.Api.Controllers
     [ApiController]
     public class WeatherStationController : ControllerBase
     {
-        public const string WEATHER_ACTUAL_CONDITION = "WeatherActualCondition";
+        public const string WEATHER_ACTUAL_CONDITION = "WeatherCurrentCondition";
         public const string WEATHER_SIMPLE_FORECAST = "WeatherSimpleForecast";
         public const string WEATHER_STATISTICS = "WeatherStatistics";
 
         private static readonly WeatherStationDto Result = new WeatherStationDto();
-        private static readonly WeatherActualCondition actualCondition = new WeatherActualCondition(WEATHER_ACTUAL_CONDITION);
+        private static readonly WeatherCurrentCondition actualCondition = new WeatherCurrentCondition(WEATHER_ACTUAL_CONDITION);
         private static readonly WeatherSimpleForecast simpleForecast = new WeatherSimpleForecast(WEATHER_SIMPLE_FORECAST);
         private static readonly WeatherStatistics statistics = new WeatherStatistics(WEATHER_STATISTICS);
         private static WeatherProvider _provider;
@@ -36,7 +36,7 @@ namespace WeatherStation.Api.Controllers
         {
             _provider.SetMeasurements(new WeatherData(WeatherHelper.GetTemperature(), WeatherHelper.GetHumidity(), WeatherHelper.GetPressure(), DateTime.Now));
 
-            Result.WeatherActualCondition = actualCondition;
+            Result.WeatherCurrentCondition = actualCondition;
             Result.WeatherSimpleForecast = simpleForecast;
             Result.WeatherStatistics = statistics;
 

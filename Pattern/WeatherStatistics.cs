@@ -10,10 +10,12 @@ namespace WeatherStation.Api.Pattern
         public List<WeatherData> ListWeatherData = new List<WeatherData>();
         public List<WeatherData> LastData = new List<WeatherData>();
         public decimal MediumTemperature { get; private set; }
-        public decimal MaximumTemperature { get; }
+        public decimal MinimumTemperature { get; private set; }
+        public decimal MaximumTemperature { get; private set; }
         public string Information { get; private set; }
         public string SensorName { get; }
         public bool IsSuscribed { get; set; }
+       
 
         public WeatherStatistics(string name)
         {
@@ -46,7 +48,9 @@ namespace WeatherStation.Api.Pattern
         public virtual void OnNext(WeatherData value)
         {
             ListWeatherData.Add(value);
-            LastData = ListWeatherData.TakeLast(3).ToList(); 
+            LastData = ListWeatherData.TakeLast(5).ToList();
+            MinimumTemperature = ListWeatherData.Select(c => c.Temp).Min();
+            MaximumTemperature = ListWeatherData.Select(c => c.Temp).Max();
 
             if (ListWeatherData.Count > 1)
             {

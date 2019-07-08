@@ -8,19 +8,17 @@ const ToastMessage = props => {
       aria-live="polite"
       aria-atomic="true"
       style={{
-        position: "relative",
         minHeight: "100px"
       }}
     >
-      <Toast onClose={props.close} show={props.show}
+      <Toast className="bg-dark text-white" onClose={props.close} show={props.show}
         style={{
           position: "absolute",
-          top: 0,
-          right: 0
+          width: "100%",
+          left: "2.5%",
+          bottom: "15%"
         }}
-        delay={3000} autohide >
-        <Toast.Header>
-        </Toast.Header>
+        delay={3000} autohide>
         <Toast.Body>{props.info}</Toast.Body>
       </Toast>
     </div>

@@ -5,16 +5,11 @@ using System.Threading.Tasks;
 
 namespace WeatherStation.Api.Helper
 {
-    
-
     public static class WeatherHelper
     {
         private static readonly Random random = new Random();
-
         public static decimal GetTemperature()
         {
-            //var rand = RandomNumberBetween(0,50);
-            //return (decimal)rand.NextDouble(); ;
             return decimal.Parse(RandomTemperatureBetween(0.0, 50.0).ToString());
         }
         public static int GetHumidity()
