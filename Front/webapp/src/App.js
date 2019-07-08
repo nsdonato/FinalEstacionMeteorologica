@@ -8,12 +8,16 @@ import CONFIG from "./config/config";
 import WeatherActualCondition from "./components/WeatherActualCondition/WeatherActualCondition";
 import WeatherSimpleForecast from "./components/WeatherSimpleForecast/WeatherSimpleForecast";
 import WeatherStatistics from "./components/WeatherStatistics/WeatherStatistics";
+import ToastMessage from "./components/ToastMessage/ToastMessage";
 
 import "./App.css";
 
 function App() {
- 
   const [dataWeather, setDataWeather] = useState([]);
+  const [showToast, setShowToast] = useState({ show: false, info: "" });
+
+  const handleShow = msg => setShowToast({ show: true, info: msg });
+  const handleClose = () => setShowToast({ show: false, info: "" });
 
   const fetchData = async () => {
     await axios
@@ -36,9 +40,11 @@ function App() {
       .post("http://localhost:57400/api/weatherstation/" + type)
       .then(result => {
         setDataWeather({ ...result.data, isNull: false });
+        handleShow("Suscribe correctly");
       })
       .catch(error => {
         setDataWeather({ isNull: true });
+        handleShow("Error Suscribe");
       });
   };
 
@@ -46,44 +52,41 @@ function App() {
     await axios
       .delete("http://localhost:57400/api/weatherstation/" + type)
       .then(result => {
-        debugger;
         setDataWeather({ ...result.data, isNull: false });
+        handleShow("Unsuscribe correctly");
       })
       .catch(error => {
         setDataWeather({ isNull: true });
+        handleShow("Error Unsuscribe");
       });
   };
 
+  const cardStyle = {
+    width: '33%'
+  }
   return (
     <div className="App">
       <header className="">
         <Container>
           {dataWeather.isNull === false ? (
             <Row>
-              {dataWeather.weatherActualCondition != null ? (
-                <div>
-                  <WeatherActualCondition
-                    data={dataWeather.weatherActualCondition}
-                  cickSuscribe={() => handleSuscribe("WeatherActualCondition")}
-                  cickUnsuscribe={() => handleUnsuscribe("WeatherActualCondition")}
-                  />
-                </div>
-              ) : null}
-              {dataWeather.weatherSimpleForecast != null ? (
-                <WeatherSimpleForecast
-                  data={dataWeather.weatherSimpleForecast}
-                />
-              ) : null}
-              {dataWeather.weatherStatistics != null ? (
-                <WeatherStatistics data={dataWeather.weatherStatistics} />
-              ) : null}
+              <WeatherActualCondition
+                style={cardStyle} data={dataWeather.weatherActualCondition}
+                cickSuscribe={() => handleSuscribe("WeatherActualCondition")}
+                cickUnsuscribe={() =>
+                  handleUnsuscribe("WeatherActualCondition")
+                }
+              />
+              <WeatherSimpleForecast style={cardStyle}  data={dataWeather.weatherSimpleForecast} />
+              <WeatherStatistics style={cardStyle}  data={dataWeather.weatherStatistics} />
+              
             </Row>
           ) : (
             <Row>
               <Col>
-                <Card style={{ width: "18rem" }}>
+                <Card style={{ width: "100%" }}>
                   <Card.Body>
-                    <Card.Title>Error</Card.Title>
+                    <Card.Title>Ups...</Card.Title>
                     <Card.Text>
                       An error occurred when consulting the weather data.
                     </Card.Text>
@@ -92,6 +95,11 @@ function App() {
               </Col>
             </Row>
           )}
+          <ToastMessage 
+                close={handleClose}
+                show={showToast.show}
+                info={showToast.info}
+              />
         </Container>
       </header>
     </div>

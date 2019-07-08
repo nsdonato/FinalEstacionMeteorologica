@@ -6,9 +6,10 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faSun } from "@fortawesome/free-solid-svg-icons";
 import ButtonSuscribe from "../Buttons/ButtonSuscribe/ButtonSuscribe";
 import ButtonUnsuscribe from "../Buttons/ButtonUnsuscribe/ButtonUnsuscribe";
+import ListGroup from "react-bootstrap/ListGroup";
 
 const WeatherActualCondition = props => {
-  const style = {
+  const styleLeft = {
     textAlign: "left"
   };
 
@@ -17,81 +18,58 @@ const WeatherActualCondition = props => {
   };
 
   return (
-    <div>
-      {props.data.isSuscribed === true ? (
-        <Col>
-          <Card style={{ width: "18rem" }}>
-            <Card.Img variant="top" src="http://www.placehold.it/100/100/" />
-            <Card.Body>
-              <Row>
-                <Col sm={12}>
-                  {" "}
-                  <Card.Title>Actual Conditions</Card.Title>{" "}
-                </Col>
-              </Row>
-              <Row>
-                <Col sm={8}>
-                  <Card.Subtitle style={style}>
-                    Temperature: {props.data.weatherData.temp}°
-                  </Card.Subtitle>
-                </Col>
-                <Col sm={2}>
-                  <FontAwesomeIcon style={styleSun} icon={faSun} />
-                </Col>
-              </Row>
-              <Row>
-                <Col sm={8}>
-                  <Card.Subtitle style={style}>
-                    Humidity: {props.data.weatherData.hum}%
-                  </Card.Subtitle>
-                </Col>
-                <Col sm={2}>
-                  <FontAwesomeIcon style={styleSun} icon={faSun} />
-                </Col>
-              </Row>
-              <Row>
-                <Col sm={8}>
-                  <Card.Subtitle style={style}>
-                    Pressure: {props.data.weatherData.pres}
-                  </Card.Subtitle>
-                </Col>
-                <Col sm={2}>
-                  <FontAwesomeIcon style={styleSun} icon={faSun} />
-                </Col>
-              </Row>
-            </Card.Body>
-            <ButtonSuscribe
-              text="Suscribe"
-              onClick={props.cickSuscribe}
-            />
-            <ButtonUnsuscribe
-              text="Unsuscribe"
-              onClick={props.cickUnsuscribe}
-            />
-          </Card>
-        </Col>
-      ) : (
-        <Col>
-          <Card style={{ width: "18rem" }}>
-            <Card.Img variant="top" src="http://www.placehold.it/100/100/" />
-            <Card.Body>
-              <Card.Title>Actual Conditions</Card.Title>
-              <Card.Text style={style}>
-                {"You need to subscribe 'Actual Conditions' to the Weather Station Channel."}
-              </Card.Text>
-            </Card.Body>
-            <ButtonSuscribe
-              text="Suscribe"
-              onClick={props.cickSuscribe}
-            />
-            <ButtonUnsuscribe
-              text="Unsuscribe"
-              onClick={props.cickUnsuscribe}
-            />
-          </Card>
-        </Col>
-      )}
-    </div>
+    <Card style={{ width: props.style.width }}>
+       <Card.Header>Actual Conditions</Card.Header>
+      <Card.Body>
+        {props.data.isSuscribed === true ? (
+          <div>
+            <ListGroup  style={styleLeft} variant="flush">
+              <ListGroup.Item key={1}> Temperature: {props.data.weatherData.temp}°</ListGroup.Item>
+              <ListGroup.Item key={2}> Humidity: {props.data.weatherData.hum}%</ListGroup.Item>
+              <ListGroup.Item key={3}> Pressure: {props.data.weatherData.pres}</ListGroup.Item>
+            </ListGroup>
+            {/* <Row>
+              <Col sm={8}>
+                <Card.Subtitle style={styleLeft}>
+                  Temperature: {props.data.weatherData.temp}°
+                </Card.Subtitle>
+              </Col>
+              <Col sm={2}>
+                <FontAwesomeIcon style={styleSun} icon={" "}/>
+              </Col>
+            </Row>
+            <Row>
+              <Col sm={8}>
+                <Card.Subtitle style={styleLeft}>
+                  Humidity: {props.data.weatherData.hum}%
+                </Card.Subtitle>
+              </Col>
+              <Col sm={2}>
+                <FontAwesomeIcon style={styleSun} icon={" "} />
+              </Col>
+            </Row>
+            <Row> 
+              <Col sm={8}>
+                <Card.Subtitle style={styleLeft}>
+                  Pressure: {props.data.weatherData.pres}
+                </Card.Subtitle>
+              </Col>
+              <Col sm={2}>
+                <FontAwesomeIcon style={styleSun} icon={" "}/>
+              </Col>
+            </Row>*/}
+          </div>
+        ) : (
+          <Card.Text style={styleLeft}>
+            {
+              "You need to subscribe 'Actual Conditions' to the Weather Station Channel."
+            }
+          </Card.Text>
+        )}
+      </Card.Body>
+      <ButtonSuscribe text="Suscribe" onClick={props.cickSuscribe} />
+      <ButtonUnsuscribe text="Unsuscribe" onClick={props.cickUnsuscribe} />
+    </Card>
   );
 };
 
