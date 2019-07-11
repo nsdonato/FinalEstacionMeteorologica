@@ -4,7 +4,7 @@ namespace WeatherStation.Api.Pattern
 {
     public class WeatherData 
     {
-        public decimal Temp { get; }
+        public decimal Temp { get; } //no abreviar, no es claro.
         public decimal Hum { get; }
         public decimal Pres { get; }
 

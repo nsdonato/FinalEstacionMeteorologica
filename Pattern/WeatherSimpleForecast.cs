@@ -17,7 +17,7 @@ namespace WeatherStation.Api.Pattern
         public string SensorName { get; private set; }
         public decimal Temperature { get; set; }
         public string Forecast { get; set; }
-        public bool IsSuscribed { get; set; }
+        public bool Suscribed { get; set; }
         public bool IsSunny { get; private set; }
 
         public WeatherSimpleForecast(string name)
@@ -27,19 +27,19 @@ namespace WeatherStation.Api.Pattern
 
         public virtual void Subscribe(IObservable<WeatherData> provider)
         {
-            IsSuscribed = true;
+            Suscribed = true;
             _unsubscriber = provider.Subscribe(this);
         }
 
         public virtual void Unsubscribe()
         {
-            IsSuscribed = false;
+            Suscribed = false;
             _unsubscriber.Dispose();
         }
 
         public virtual void OnCompleted()
         {
-            IsSuscribed = false;
+            //Suscribed = false;
             Unsubscribe();
         }
 
@@ -54,18 +54,10 @@ namespace WeatherStation.Api.Pattern
             Forecast = CalculateForecast();
         }
 
-        public string CalculateForecast()
+        private string CalculateForecast()
         {
-            if (Temperature > 21)
-            {
-                IsSunny = true;
-                return FORECAST_SUNNY_DAY;
-            }
-            else
-            {
-                IsSunny = false;
-                return FORECAST_COLD_DAY;
-            }
+            IsSunny = Temperature > 21;
+            return IsSunny ? FORECAST_SUNNY_DAY : FORECAST_COLD_DAY;          
         }
     }
 }

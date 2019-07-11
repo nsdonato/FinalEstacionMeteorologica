@@ -26,14 +26,11 @@ namespace WeatherStation.Api.Helper
             return minValue + (next * (maxValue - minValue));
         }
         private static int RandomHumidityBetween(int maxValue)
-        {
-            var next = random.Next(maxValue);
-            return next;
-        }
+        => random.Next(maxValue);       
+            
+        
         private static double RandomPressureBetween(double minValue, double maxValue)
-        {
-            var next = random.NextDouble();
-            return minValue + (next * (maxValue - minValue));
-        }
+        => minValue + (random.NextDouble() * (maxValue - minValue));
+        
     }
 }
