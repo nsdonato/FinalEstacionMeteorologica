@@ -5,6 +5,7 @@ namespace WeatherStation.Api.Pattern
     public class WeatherCurrentCondition : IObserver<WeatherData>
     {
         private IDisposable _unsubscriber;
+        
         public WeatherData WeatherData { get; private set; }
         public string SensorName { get; }
         public bool IsSuscribed { get; set; }
@@ -22,7 +23,7 @@ namespace WeatherStation.Api.Pattern
 
         public virtual void Unsubscribe()
         {
-            //IsSuscribed = false;
+            IsSuscribed = false;
             _unsubscriber.Dispose();
         }
 

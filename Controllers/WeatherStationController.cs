@@ -14,8 +14,8 @@ namespace WeatherStation.Api.Controllers
         public const string WEATHER_SIMPLE_FORECAST = "WeatherSimpleForecast";
         public const string WEATHER_STATISTICS = "WeatherStatistics";
 
-        private static readonly WeatherStationDto Result = new WeatherStationDto();
-        private static readonly WeatherCurrentCondition actualCondition = new WeatherCurrentCondition(WEATHER_ACTUAL_CONDITION);
+        private static readonly WeatherStationDto _result = new WeatherStationDto();
+        private static readonly WeatherCurrentCondition _actualCondition = new WeatherCurrentCondition(WEATHER_ACTUAL_CONDITION);
         private static readonly WeatherSimpleForecast simpleForecast = new WeatherSimpleForecast(WEATHER_SIMPLE_FORECAST);
         private static readonly WeatherStatistics statistics = new WeatherStatistics(WEATHER_STATISTICS);
         private static WeatherProvider _provider;
@@ -25,7 +25,7 @@ namespace WeatherStation.Api.Controllers
             if (_provider == null)
             {
                 _provider = new WeatherProvider();
-                actualCondition.Subscribe(_provider);
+                _actualCondition.Subscribe(_provider);
                 statistics.Subscribe(_provider);
                 simpleForecast.Subscribe(_provider);
             }
@@ -36,9 +36,9 @@ namespace WeatherStation.Api.Controllers
         {
             _provider.SetMeasurements(new WeatherData(WeatherHelper.GetTemperature(), WeatherHelper.GetHumidity(), WeatherHelper.GetPressure(), DateTime.Now));
 
-            Result.WeatherCurrentCondition = actualCondition;
-            Result.WeatherSimpleForecast = simpleForecast;
-            Result.WeatherStatistics = statistics;
+            _result.WeatherCurrentCondition = _actualCondition;
+            _result.WeatherSimpleForecast = simpleForecast;
+            _result.WeatherStatistics = statistics;
 
             return Ok(Result);
         }
@@ -47,15 +47,15 @@ namespace WeatherStation.Api.Controllers
         [Route("{weatherType}")]
         public IActionResult DeleteSuscriber(string weatherType)
         {
-            foreach (var item in _provider.observers)
+            foreach (var item in _provider.Observers)
             {
-                if (item.GetType().Name.Equals(weatherType))
+                if (item.GetType().Name.Equals(weatherType))//tal vez le meteria un toUpper
                 {
                     item.OnCompleted();
                     break;
                 }
             }
-            return Ok(Result);
+            return Ok();
         }
 
         [HttpPost]
@@ -75,7 +75,7 @@ namespace WeatherStation.Api.Controllers
                     break;
             }
 
-            return Created("api/[controller]/weatherstation/weatherType", Result);
+            return Created("api/[controller]/weatherstation/weatherType", _result);
         }
 
 

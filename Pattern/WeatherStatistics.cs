@@ -4,22 +4,23 @@ using System.Linq;
 
 namespace WeatherStation.Api.Pattern
 {
-    public class WeatherStatistics : IObserver<WeatherData>
+    public class WeatherStatistics : IObserver<WeatherData> 
     {
         private IDisposable _unsubscriber;
-        public List<WeatherData> ListWeatherData = new List<WeatherData>();
-        public List<WeatherData> LastData = new List<WeatherData>();
-        public decimal MediumTemperature { get; private set; }
-        public decimal MinimumTemperature { get; private set; }
+        
+        public IList<WeatherData> ListWeatherData = new List<WeatherData>(); //porque public ??, lo mismo abajo
+        public IList<WeatherData> LastData = new List<WeatherData>(); //no me gusta que se creen en este momento, se podrian instanciar en el constructor
+        public decimal MediumTemperature { get; private set; } //para las tres temperature, usaria un objeto que sea StatisticsTemperature, que tengan esas tres propiedades
+        public decimal MinimumTemperature { get; private set; } //y el mediumTemperature se calcula en el get.. muy de goma lo que te estoy diciendo
         public decimal MaximumTemperature { get; private set; }
         public string Information { get; private set; }
         public string SensorName { get; }
-        public bool IsSuscribed { get; set; }
+        public bool Suscribed { get; set; }
        
 
-        public WeatherStatistics(string name)
+        public WeatherStatistics()
         {
-            SensorName = name;
+            SensorName = WEATHER_STATISTICS;
         }
 
         public virtual void Subscribe(IObservable<WeatherData> provider)
@@ -30,13 +31,13 @@ namespace WeatherStation.Api.Pattern
 
         public virtual void Unsubscribe()
         {
-            IsSuscribed = false;
+            Suscribed = false;
             _unsubscriber.Dispose();
         }
 
         public virtual void OnCompleted()
         {
-            IsSuscribed = false;
+            //IsSuscribed = false; -> ya lo hace el unsuscribe
             Unsubscribe();
         }
 
@@ -52,9 +53,9 @@ namespace WeatherStation.Api.Pattern
             MinimumTemperature = ListWeatherData.Select(c => c.Temp).Min();
             MaximumTemperature = ListWeatherData.Select(c => c.Temp).Max();
 
-            if (ListWeatherData.Count > 1)
+            if (ListWeatherData.Count > 0)// si tiene una temperatura la promedio seria la misma, medio al dope toda la cuenta pero buen paja 
             {
-                MediumTemperature = ((ListWeatherData.Select(c => c.Temp).Max() + ListWeatherData.Select(c => c.Temp).Min()) / 2);
+                MediumTemperature = (MaximumTemperature + MinimumTemperature) / 2);
                 Information = $"The average temperature is: {MediumTemperature}";
             }
             else

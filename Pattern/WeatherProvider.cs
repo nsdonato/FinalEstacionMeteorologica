@@ -6,24 +6,23 @@ namespace WeatherStation.Api.Pattern
 {
     public class WeatherProvider : IObservable<WeatherData>
     {
-        public List<IObserver<WeatherData>> observers;
+        public IList<IObserver<WeatherData>> Observers {get ; private set;}
 
         public WeatherProvider()
-        {
-            observers = new List<IObserver<WeatherData>>();
-        }
+            => Observers = new List<IObserver<WeatherData>>();
+        
 
         public IDisposable Subscribe(IObserver<WeatherData> observer)
         {
-            if (!observers.Equals(observer))
-                observers.Add(observer);
+            if (!Observers.Equals(observer))
+                Observers.Add(observer);
 
-            return new Unsubscriber(observers, observer);
+            return new Unsubscriber(Observers, observer);
         }
 
         public void SetMeasurements(WeatherData weather)
         {
-            foreach (var observer in observers)
+            foreach (var observer in Observers)
             {
                 if (weather == null)
                     observer.OnError(new WeatherUnKnnowException());

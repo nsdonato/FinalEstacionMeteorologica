@@ -10,13 +10,12 @@ namespace WeatherStation.Api.Pattern
 
         public Unsubscriber(List<IObserver<WeatherData>> observers, IObserver<WeatherData> observer)
         {
-            this._observers = observers;
-            this._observer = observer;
+            this._observers = observers ?? throw new ArgumentNullException(nameof(observers));
+            this._observer = observer  ?? throw new ArgumentNullException(nameof(observer));
         }
 
         public void Dispose()
-        {
-            if (!(_observer == null)) _observers.Remove(_observer);
-        }
+            => _observers.Remove(_observer);
+        
     }
 }
